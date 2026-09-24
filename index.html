@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Science Study Tutorial</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f4f7fb;color:#172033}
+header{background:linear-gradient(135deg,#123c69,#1976d2);color:white;padding:28px 16px;text-align:center}
+header h1{margin:0 0 8px;font-size:28px}
+header p{margin:0;font-size:14px}
+.container{max-width:1000px;margin:auto;padding:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 20px}
+button,.tab{border:0;border-radius:10px;padding:12px 16px;background:#1976d2;color:#fff;cursor:pointer;font-size:15px}
+button:hover,.tab:hover{opacity:.9}
+.tab.active{background:#0d2d50}
+.card{background:white;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 4px 16px #0000000d}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.subject{border-left:5px solid #1976d2}
+.subject h3{margin:0 0 8px}
+.subject ul{padding-left:20px;line-height:1.9}
+input,select,textarea{width:100%;padding:12px;border:1px solid #ccd5e0;border-radius:9px;margin:7px 0 14px;font-size:15px}
+.hidden{display:none}
+.option{display:block;background:#f0f5fb;color:#172033;text-align:left;margin:8px 0;width:100%;border:1px solid #d5dfeb}
+.option.selected{background:#c8e2ff;border-color:#1976d2}
+.result{font-size:20px;font-weight:bold;color:#0b7a43}
+.progress{height:10px;background:#e2e8f0;border-radius:10px;overflow:hidden}
+.progress div{height:100%;background:#19a463;width:0}
+footer{text-align:center;color:#667085;padding:25px;font-size:13px}
+.small{font-size:13px;color:#667085}
+.video-item{border:1px solid #dbe4ee;border-radius:12px;padding:14px;margin:10px 0;background:#f8fbff}
+.video-item h3{margin:0 0 6px;font-size:16px}
+.video-item a{display:inline-block;margin-top:8px;text-decoration:none;background:#e53935;color:white;padding:9px 12px;border-radius:8px}
+.video-tag{font-size:12px;color:#1976d2;font-weight:bold}
+body.dark .video-item{background:#26364b;border-color:#53657b}
+body.dark .video-item a{color:white}
+body.dark{background:#101827;color:#e8eef7}body.dark .card{background:#1c293b;color:#e8eef7}body.dark input,body.dark select{background:#26364b;color:white;border-color:#53657b}body.dark .option{background:#26364b;color:white;border-color:#53657b}body.dark .small{color:#b8c4d6}
+
+.video-section{margin-top:16px}
+.video-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border:1px solid #dbe5ef;border-radius:12px;margin:8px 0;background:#f8fbff}
+.video-item strong{display:block}
+.video-item small{color:#667085}
+.video-actions{display:flex;gap:6px;flex-wrap:wrap}
+.btn-danger{background:#d92d20!important}
+.btn-secondary{background:#64748b!important}
+.modal{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}
+.modal-box{background:white;border-radius:18px;padding:20px;max-width:520px;width:100%;max-height:90vh;overflow:auto}
+body.dark .modal-box{background:#1c293b;color:#e8eef7}
+body.dark .video-item{background:#26364b;border-color:#53657b}
+.video-card{border:1px solid #dbe5ef;border-radius:14px;padding:14px;margin-top:12px}
+.video-card iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:10px}
+
+</style>
+</head>
+<body>
+<header>
+<div style="font-size:42px">🎓</div>
+<h1>Science Study Tutorial</h1>
+<p>Class 9 • Science Division • Study & MCQ Practice</p>
+</header>
+
+<div class="container">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:15px"><b>আপনার পড়াশোনার সঙ্গী 🚀</b><button onclick="toggleDark()">🌙 থিম পরিবর্তন</button></div><div class="tabs">
+<button class="tab active" onclick="showPage('home',this)">হোম</button>
+<button class="tab" onclick="showPage('subjects',this)">বিষয়সমূহ</button>
+<button class="tab" onclick="showPage('exam',this)">MCQ পরীক্ষা</button>
+<button class="tab" onclick="showPage('videos',this)">ভিডিও লার্নিং</button>
+<button class="tab" onclick="showPage('progress',this)">অগ্রগতি</button>
+<button class="tab" onclick="showPage('videos',this)">🎥 ভিডিও ম্যানেজার</button>
+</div>
+
+<section id="home" class="page">
+<div class="card">
+<h2>স্বাগতম! 👋</h2>
+<p>নিয়মিত পড়াশোনা করুন, অধ্যায় শেষ করুন এবং MCQ পরীক্ষার মাধ্যমে নিজের প্রস্তুতি যাচাই করুন।</p>
+<div class="progress"><div id="homeProgress"></div></div>
+<p class="small" id="homeProgressText">আপনার অগ্রগতি: 0%</p>
+</div>
+<div class="grid">
+<div class="card"><h3>📚 বিষয়ভিত্তিক পড়াশোনা</h3><p>বিজ্ঞান বিভাগের গ্রুপ ও সাধারণ বিষয়গুলোর তালিকা দেখুন।</p></div>
+<div class="card"><h3>📝 MCQ পরীক্ষা</h3><p>নমুনা প্রশ্নের মাধ্যমে নিজেকে যাচাই করুন।</p></div>
+<div class="card"><h3>📈 অগ্রগতি ট্র্যাকার</h3><p>কতগুলো অধ্যায় শেষ করেছেন তা চিহ্নিত করুন।</p></div>
+</div>
+</section>
+
+<section id="subjects" class="page hidden">
+<div class="card"><h2>📚 বিষয়সমূহ</h2><input id="search" placeholder="বিষয় বা অধ্যায় খুঁজুন..." oninput="filterSubjects()"></div>
+<div class="grid" id="subjectGrid"></div>
+</section>
+
+<section id="exam" class="page hidden">
+<div class="card">
+<h2>MCQ পরীক্ষা</h2>
+<label>বিষয় নির্বাচন করুন</label>
+<select id="examSubject" onchange="loadQuestions()">
+<option value="all">সব বিষয়</option>
+<option value="physics">পদার্থবিজ্ঞান</option>
+<option value="chemistry">রসায়ন</option>
+<option value="biology">জীববিজ্ঞান</option>
+<option value="higher">উচ্চতর গণিত</option>
+<option value="math">সাধারণ গণিত</option>
+</select>
+<div id="quiz"></div>
+<button onclick="submitQuiz()">পরীক্ষা জমা দিন</button>
+<div id="quizResult"></div>
+</div>
+</section>
+
+
+<section id="videos" class="page hidden">
+<div class="card">
+<h2>🎥 YouTube Learning Center</h2>
+<p class="small">প্রতিটি অধ্যায়ের জন্য YouTube ভিডিও যোগ করুন এবং অ্যাপ থেকেই দেখুন।</p>
+<label>বিষয় নির্বাচন করুন</label>
+<select id="videoSubject" onchange="updateChapterOptions()"></select>
+<label>অধ্যায় নির্বাচন করুন</label>
+<select id="videoChapter"></select>
+<label>ভিডিওর নাম</label>
+<input id="videoTitle" placeholder="যেমন: তাপ ও তাপমাত্রা — ক্লাস ১">
+<label>YouTube ভিডিও লিংক</label>
+<input id="videoUrl" type="url" placeholder="https://www.youtube.com/watch?v=... অথবা https://youtu.be/...">
+<button onclick="addVideo()">➕ ভিডিও যোগ করুন</button>
+<p id="videoMessage" class="small"></p>
+</div>
+<div class="card">
+<h2>📺 অধ্যায়ভিত্তিক ভিডিও</h2>
+<input id="videoSearch" placeholder="ভিডিও খুঁজুন..." oninput="renderVideos()">
+<div id="videoList"></div>
+</div>
+</section>
+
+
+<section id="videos" class="page hidden">
+<div class="card">
+<h2>🎥 YouTube Learning Video Manager</h2>
+<p class="small">অধ্যায় নির্বাচন করে YouTube ভিডিওর লিংক যোগ করুন। ভিডিওগুলো আপনার ব্রাউজারে সংরক্ষিত থাকবে।</p>
+<label>বিষয় নির্বাচন করুন</label>
+<select id="videoSubject" onchange="loadVideoChapters()"></select>
+<label>অধ্যায় নির্বাচন করুন</label>
+<select id="videoChapter"></select>
+<button onclick="openAddVideo()">＋ ভিডিও লিংক যোগ করুন</button>
+<div id="videoList" class="video-section"></div>
+</div>
+</section>
+
+<section id="progress" class="page hidden">
+<div class="card">
+<h2>অগ্রগতি ট্র্যাকার</h2>
+<p class="small">অধ্যায় শেষ হলে টিক চিহ্ন দিন।</p>
+<div id="tracker"></div>
+</div>
+</section>
+</div>
+
+
+<div id="videoModal" class="modal hidden">
+<div class="modal-box">
+<h2>＋ YouTube ভিডিও যোগ করুন</h2>
+<label>ভিডিওর নাম</label>
+<input id="videoTitle" placeholder="যেমন: তাপ ও তাপমাত্রা">
+<label>YouTube লিংক</label>
+<input id="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
+<p class="small">YouTube watch, youtu.be অথবা embed লিংক ব্যবহার করুন।</p>
+<div style="display:flex;gap:8px;justify-content:flex-end">
+<button class="btn-secondary" onclick="closeVideoModal()">বাতিল</button>
+<button onclick="saveVideo()">সংরক্ষণ</button>
+</div>
+</div>
+</div>
+
+<footer>Science Study Tutorial © 2026 | তৈরি করা হয়েছে পড়াশোনার সহায়তার জন্য</footer>
+
+<script>
+const subjects=[
+{name:"পদার্থবিজ্ঞান",key:"physics",icon:"⚛️",chapters:["ভৌত রাশি ও পরিমাপ","গতি","বল","কাজ, ক্ষমতা ও শক্তি","পদার্থের অবস্থা ও চাপ","বস্তুর উপর তাপের প্রভাব","তরঙ্গ ও শব্দ","আলোর প্রতিফলন","আলোর প্রতিসরণ"]},
+{name:"রসায়ন",key:"chemistry",icon:"🧪",chapters:["পদার্থের গঠন","পরমাণুর গঠন","পদার্থের অবস্থা","পর্যায় সারণি","রাসায়নিক বন্ধন","মোল ও রাসায়নিক গণনা","রাসায়নিক বিক্রিয়া","অম্ল, ক্ষার ও লবণ","রসায়ন ও শক্তি"]},
+{name:"জীববিজ্ঞান",key:"biology",icon:"🌿",chapters:["কোষ ও এর গঠন","কোষ বিভাজন","কোষ রসায়ন","অণুজীব","শৈবাল ও ছত্রাক","উদ্ভিদ শারীরতত্ত্ব","জীবের পরিবেশ","রেচন","সমন্বয়","চলন ও অঙ্গচালনা","জীবের প্রজনন"]},
+{name:"উচ্চতর গণিত",key:"higher",icon:"📐",chapters:["বীজগাণিতিক রাশি","জ্যামিতি","ত্রিকোণমিতি","অসীম ধারা","দ্বিপদী বিস্তৃতি","সম্ভাবনা"]},
+{name:"সাধারণ গণিত",key:"math",icon:"➗",chapters:["বীজগাণিতিক অনুপাত","দুই চলক বিশিষ্ট সরল সহসমীকরণ","পরিমিতি","ত্রিকোণমিতিক অনুপাত","পরিসংখ্যান","ব্যবহারিক জ্যামিতি"]},
+{name:"বাংলা ও ইংরেজি",key:"language",icon:"📖",chapters:["বাংলা ১ম পত্র","বাংলা ২য় পত্র","ইংরেজি ১ম পত্র","ইংরেজি ২য় পত্র"]},
+{name:"বাংলাদেশ ও বিশ্বপরিচয়",key:"bgs",icon:"🌍",chapters:["বাংলাদেশের স্বাধীনতা","নাগরিক অধিকার","অর্থনীতি ও সমাজ","বিশ্ব ও আন্তর্জাতিক সম্পর্ক"]},
+{name:"ICT ও ধর্ম",key:"other",icon:"💻",chapters:["তথ্য ও যোগাযোগ প্রযুক্তি","হিন্দুধর্ম ও নৈতিক শিক্ষা"]}
+];
+
+const questions=[
+{subject:"physics",q:"তাপমাত্রা বৃদ্ধির ফলে সাধারণত বস্তুর কী ঘটে?",o:["সংকোচন","প্রসারণ","ভর কমে যায়","রং পরিবর্তন"],a:1},
+{subject:"physics",q:"তাপ সঞ্চালনের কোন পদ্ধতিতে মাধ্যমের প্রয়োজন হয় না?",o:["পরিবহন","পরিচলন","বিকিরণ","সবগুলো"],a:2},
+{subject:"chemistry",q:"অম্লের pH সাধারণত কত?",o:["৭-এর কম","৭","৭-এর বেশি","১৪"],a:0},
+{subject:"biology",q:"মানবদেহে রেচনের প্রধান অঙ্গ কোনটি?",o:["হৃদপিণ্ড","ফুসফুস","বৃক্ক","পাকস্থলী"],a:2},
+{subject:"higher",q:"সম্ভাবনার মান কত থেকে কতের মধ্যে থাকে?",o:["০ থেকে ১","১ থেকে ১০","-১ থেকে ১","২ থেকে ৫"],a:0},
+{subject:"math",q:"ত্রিভুজের তিন কোণের সমষ্টি কত?",o:["৯০°","১৮০°","২৭০°","৩৬০°"],a:1}
+];
+
+let currentQuestions=[], answers={};
+
+let videos=JSON.parse(localStorage.getItem('sst_videos')||'[]');
+function initVideoForm(){
+const s=document.getElementById('videoSubject');
+s.innerHTML=subjects.map(x=>`<option value="${x.key}">${x.icon} ${x.name}</option>`).join('');
+updateChapterOptions();renderVideos();
+}
+function updateChapterOptions(){
+const key=document.getElementById('videoSubject').value;
+const s=subjects.find(x=>x.key===key);
+document.getElementById('videoChapter').innerHTML=(s?s.chapters:[]).map((c,i)=>`<option value="${i}">${c}</option>`).join('');
+}
+function normalizeYoutube(url){
+try{
+let u=new URL(url);
+if(!['youtube.com','www.youtube.com','m.youtube.com','youtu.be'].includes(u.hostname))return null;
+if(u.hostname==='youtu.be')return 'https://www.youtube.com/watch?v='+u.pathname.slice(1);
+if(u.searchParams.get('v'))return 'https://www.youtube.com/watch?v='+u.searchParams.get('v');
+return null;
+}catch(e){return null;}
+}
+function addVideo(){
+const key=document.getElementById('videoSubject').value;
+const chapterIndex=Number(document.getElementById('videoChapter').value);
+const title=document.getElementById('videoTitle').value.trim();
+const raw=document.getElementById('videoUrl').value.trim();
+const url=normalizeYoutube(raw);
+const msg=document.getElementById('videoMessage');
+if(!title||!url){msg.textContent='সঠিক ভিডিওর নাম ও YouTube লিংক দিন।';msg.style.color='#d32f2f';return;}
+const subject=subjects.find(x=>x.key===key);
+videos.push({id:Date.now(),subject:key,subjectName:subject.name,chapter:subject.chapters[chapterIndex],title,url});
+localStorage.setItem('sst_videos',JSON.stringify(videos));
+document.getElementById('videoTitle').value='';document.getElementById('videoUrl').value='';
+msg.textContent='ভিডিও সফলভাবে যোগ হয়েছে।';msg.style.color='#0b7a43';renderVideos();
+}
+function deleteVideo(id){
+videos=videos.filter(v=>v.id!==id);localStorage.setItem('sst_videos',JSON.stringify(videos));renderVideos();
+}
+function renderVideos(){
+const term=(document.getElementById('videoSearch')?.value||'').toLowerCase();
+const list=document.getElementById('videoList');
+const filtered=videos.filter(v=>(v.title+' '+v.chapter+' '+v.subjectName).toLowerCase().includes(term));
+if(!filtered.length){list.innerHTML='<p class="small">এখনও কোনো ভিডিও যোগ করা হয়নি। উপরের ফর্ম ব্যবহার করে ভিডিও যোগ করুন।</p>';return;}
+list.innerHTML=filtered.map(v=>`<div class="video-item"><div class="video-tag">${v.subjectName} › ${v.chapter}</div><h3>▶️ ${v.title}</h3><a href="${v.url}" target="_blank" rel="noopener">YouTube-এ দেখুন ↗</a> <button style="background:#667085;margin-left:6px;padding:9px 12px" onclick="deleteVideo(${v.id})">মুছুন</button></div>`).join('');
+}
+
+function showPage(id,btn){
+document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+if(btn)btn.classList.add('active');
+if(id==='progress')renderTracker();
+}
+function toggleDark(){document.body.classList.toggle('dark');localStorage.setItem('dark',document.body.classList.contains('dark'));}
+if(localStorage.getItem('dark')==='true')document.body.classList.add('dark');
+function filterSubjects(){let term=document.getElementById('search').value.toLowerCase();document.querySelectorAll('#subjectGrid .subject').forEach(c=>c.style.display=c.innerText.toLowerCase().includes(term)?'block':'none');}
+function renderSubjects(){
+const grid=document.getElementById('subjectGrid');
+grid.innerHTML=subjects.map(s=>`<div class="card subject"><h3>${s.icon} ${s.name}</h3><ul>${s.chapters.map(c=>`<li>${c}</li>`).join('')}</ul></div>`).join('');
+}
+function renderTracker(){
+const box=document.getElementById('tracker');
+let total=0,done=0;
+box.innerHTML=subjects.map(s=>`<div class="card"><h3>${s.icon} ${s.name}</h3>${s.chapters.map((c,i)=>{
+let id=s.key+'_'+i;let checked=localStorage.getItem(id)==='1';total++;if(checked)done++;
+return `<label><input type="checkbox" ${checked?'checked':''} onchange="toggleChapter('${id}',this.checked)"> ${c}</label>`;
+}).join('')}</div>`).join('');
+let pct=Math.round(done/total*100);
+document.getElementById('homeProgress').style.width=pct+'%';
+document.getElementById('homeProgressText').textContent='আপনার অগ্রগতি: '+pct+'%';
+}
+function toggleChapter(id,val){localStorage.setItem(id,val?'1':'0');renderTracker();}
+function loadQuestions(){
+let sub=document.getElementById('examSubject').value;
+currentQuestions=sub==='all'?questions:questions.filter(q=>q.subject===sub);
+answers={};
+document.getElementById('quizResult').innerHTML='';
+document.getElementById('quiz').innerHTML=currentQuestions.map((q,i)=>`<div class="card"><b>${i+1}. ${q.q}</b>${q.o.map((o,j)=>`<button class="option" onclick="choose(${i},${j},this)">${String.fromCharCode(2453+j)}) ${o}</button>`).join('')}</div>`).join('');
+}
+function choose(i,j,el){answers[i]=j;el.parentElement.querySelectorAll('.option').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
+function submitQuiz(){
+let score=currentQuestions.reduce((n,q,i)=>n+(answers[i]===q.a?1:0),0);
+document.getElementById('quizResult').innerHTML=`<p class="result">আপনার ফলাফল: ${score} / ${currentQuestions.length}</p><p>সঠিক উত্তর: ${score}টি | ভুল/অনুত্তরিত: ${currentQuestions.length-score}টি</p>`;
+}
+renderSubjects();renderTracker();loadQuestions();initVideoForm();
+
+const VIDEO_KEY='scienceStudyVideos';
+let videoData=JSON.parse(localStorage.getItem(VIDEO_KEY)||'{}');
+
+function initVideoManager(){
+ const s=document.getElementById('videoSubject');
+ if(!s)return;
+ s.innerHTML=subjects.map(x=>`<option value="${x.key}">${x.icon} ${x.name}</option>`).join('');
+ loadVideoChapters();
+}
+function loadVideoChapters(){
+ const sk=document.getElementById('videoSubject').value;
+ const sub=subjects.find(x=>x.key===sk);
+ document.getElementById('videoChapter').innerHTML=(sub?sub.chapters:[]).map((c,i)=>`<option value="${i}">${i+1}. ${c}</option>`).join('');
+ renderVideos();
+}
+function videoBucket(){
+ const sk=document.getElementById('videoSubject').value;
+ const ch=document.getElementById('videoChapter').value;
+ const key=sk+'_'+ch;
+ if(!videoData[key])videoData[key]=[];
+ return videoData[key];
+}
+function openAddVideo(){
+ document.getElementById('videoTitle').value='';
+ document.getElementById('videoUrl').value='';
+ document.getElementById('videoModal').classList.remove('hidden');
+}
+function closeVideoModal(){document.getElementById('videoModal').classList.add('hidden');}
+function youtubeId(url){
+ try{
+  // ভুল করে শুরু/শেষে quotation mark থাকলেও তা সরিয়ে দেবে
+  url = url.trim().replace(/^[\\'\\\"“”‘’]+|[\\'\\\"“”‘’]+$/g,'');
+  if(!/^https?:\\/\\//i.test(url)) url='https://'+url;
+  const u=new URL(url);
+  const host=u.hostname.toLowerCase().replace('www.','');
+  if(host==='youtu.be') return u.pathname.replace(/^\\//,'').split('/')[0];
+  if(host==='youtube.com' || host==='m.youtube.com'){
+    if(u.searchParams.get('v')) return u.searchParams.get('v');
+    const parts=u.pathname.split('/');
+    const i=parts.indexOf('embed');
+    if(i>=0)return parts[i+1]||'';
+    const si=parts.indexOf('shorts');
+    if(si>=0)return parts[si+1]||'';
+  }
+ }catch(e){}
+ return '';
+}
+function saveVideo(){
+ const title=document.getElementById('videoTitle').value.trim();
+ const url=document.getElementById('videoUrl').value.trim();
+ const id=youtubeId(url);
+ if(!title||!id){alert('ভিডিওর নাম ও সঠিক YouTube লিংক দিন।');return;}
+ const sk=document.getElementById('videoSubject').value;
+ const ch=document.getElementById('videoChapter').value;
+ const key=sk+'_'+ch;
+ if(!videoData[key])videoData[key]=[];
+ videoData[key].push({title,url,id});
+ localStorage.setItem(VIDEO_KEY,JSON.stringify(videoData));
+ closeVideoModal();renderVideos();
+}
+function deleteVideo(index){
+ const sk=document.getElementById('videoSubject').value;
+ const ch=document.getElementById('videoChapter').value;
+ const key=sk+'_'+ch;
+ if(confirm('এই ভিডিওটি মুছে ফেলবেন?')){
+  videoData[key].splice(index,1);
+  localStorage.setItem(VIDEO_KEY,JSON.stringify(videoData));
+  renderVideos();
+ }
+}
+function renderVideos(){
+ const box=document.getElementById('videoList');
+ if(!box)return;
+ const sk=document.getElementById('videoSubject').value;
+ const ch=document.getElementById('videoChapter').value;
+ const sub=subjects.find(x=>x.key===sk);
+ const chapter=sub?.chapters[ch]||'';
+ const list=videoData[sk+'_'+ch]||[];
+ box.innerHTML=`<h3>📖 ${chapter}</h3>`+(list.length?list.map((v,i)=>`
+ <div class="video-card">
+ <strong>${i+1}. ${v.title}</strong>
+ <iframe src="https://www.youtube.com/embed/${v.id}" title="${v.title}" allowfullscreen></iframe>
+ <div class="video-actions">
+ <button class="btn-secondary" onclick="window.open('${v.url}','_blank')">YouTube-এ খুলুন</button>
+ <button class="btn-danger" onclick="deleteVideo(${i})">মুছে ফেলুন</button>
+ </div>
+ </div>`).join(''):'<p class="small">এই অধ্যায়ে এখনো কোনো ভিডিও যোগ করা হয়নি। উপরের “ভিডিও লিংক যোগ করুন” বাটনে চাপ দিন।');
+}
+initVideoManager();
+
+</script>
+</body>
+</html>
